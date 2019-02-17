@@ -14,7 +14,7 @@ var dotenv = require('dotenv');
 
 
 var audioUtils = require('./audio/utils');
-var messageUtils = require('./message/utils')();
+var messageUtils = require('./message/utils');
 
 
 // read .env file and add it to process.env
@@ -127,7 +127,7 @@ io.on("connection", function(client) {
   app.post('/audio', function(req, res, next) {
       const message = req.body;
       const { username, date, content, dataUri } = message;
-      audioUtils.saveImage(dataUri, username)
+      audioUtils.saveAudio(dataUri, username)
         .then((audioUrl)=>{
           console.log('success saved audio');
           const stripedDataUriMessage = {

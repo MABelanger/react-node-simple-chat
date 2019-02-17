@@ -33,7 +33,7 @@ function _decodeBase64 (dataUri) {
 }
 
 function _getFileName (extention, fileNumber) {
-  return 'img-' + fileNumber + '.' + extention;
+  return 'audio-' + fileNumber + '.' + extention;
 }
 
 function _getExtention (fileType) {
@@ -47,7 +47,7 @@ function _getExtention (fileType) {
   return 'bin';
 }
 
-function getDataAndFileName (dataUri, fileNumber) {
+function _getDataAndFileName (dataUri, fileNumber) {
   let {type, codec, data} = _decodeBase64(dataUri);
   let extention = _getExtention(type);
   let fileName = _getFileName(extention, fileNumber);
@@ -58,26 +58,25 @@ function getDataAndFileName (dataUri, fileNumber) {
   };
 }
 
-function saveImage (dataUri) {
+function saveAudio (dataUri) {
   let promise = new Promise((resolve, reject) => {
     let mediaDir = path.join(__dirname, '../media');
+
     fs.readdir(mediaDir, (err, files) => {
-      console.log('files.length', files.length);
-      let {data, fileName} = getDataAndFileName(dataUri, files.length);
+      let {data, fileName} = _getDataAndFileName(dataUri, files.length);
 
       if (!data) {
-        reject(new Error('No image or wrong format'));
+        reject(new Error('No audio or wrong format'));
         return;
       }
 
       let relativeFilePath = path.join(mediaDir, fileName);
-      console.log('relativeFilePath', relativeFilePath);
       fs.writeFile(relativeFilePath, data, function (err) {
         if (err) {
           reject(err);
           return;
         }
-        // let imageInfo = fileInfo.update(relativeFilePath);
+        // let audioInfo = fileInfo.update(relativeFilePath);
         const audioUrl = '/media/' + fileName;
         resolve(audioUrl);
       });
@@ -88,5 +87,5 @@ function saveImage (dataUri) {
 }
 
 module.exports = {
-  saveImage
+  saveAudio
 };

@@ -1,4 +1,4 @@
-var messageUtils = require('./message/utils')();
+var messageUtils = require('./message/utils');
 
 module.exports = function () {
   let module = {};
