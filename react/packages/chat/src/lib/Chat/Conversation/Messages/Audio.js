@@ -29,7 +29,9 @@ export class Audio extends React.Component {
     }
     else {
       return (
-        <div style={{width: '30px', height: '30px'}} onClick={this.handlePlay} dangerouslySetInnerHTML={{ __html: playButton }}></div>
+        <div>
+          <img style={{width: '30px', height: '30px'}} onClick={this.handlePlay} src={playButton} alt="play" />
+        </div>
       );
     }
   }
