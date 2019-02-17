@@ -13,7 +13,8 @@ var utils = require('./utils');
 var dotenv = require('dotenv');
 
 
-var audioDbUtils = require('./audioDb/utils');
+var audioUtils = require('./audio/utils');
+var messageUtils = require('./message/utils')();
 
 
 // read .env file and add it to process.env
@@ -120,24 +121,34 @@ app.post('/login', function(req, res, next) {
   })(req, res, next);
 });
 
-app.post('/audio', function(req, res, next) {
-    const dataUri = req.body.dataUri;
-    console.log('req.body.dataUri', req.body.dataUri);
-    audioDbUtils.saveImage(dataUri)
-    .then(()=>{
-      console.log('success')
-      res.status(200).json({result: 'hello'});
-    })
 
-    // if (req.body && req.body.dataUri) {
-    //   let dataUri = req.body.dataUri;
-    //   _saveDb(dataUri, res, resolve, reject);
-    // } else {
-    //   _send400Err(res, reject, 'dataUri missing');
-    // }
+io.on("connection", function(client) {
+  socketListners.applyClient(client);
+  app.post('/audio', function(req, res, next) {
+      const message = req.body;
+      const { username, date, content, dataUri } = message;
+      audioUtils.saveImage(dataUri, username)
+        .then((audioUrl)=>{
+          console.log('success saved audio');
+          const stripedDataUriMessage = {
+            username,
+            date,
+            content,
+            audioUrl
+          };
+          messageUtils.appendNewMessage(stripedDataUriMessage, function cb() {
+            client.emit("thread", stripedDataUriMessage);
+            client.broadcast.emit("thread", stripedDataUriMessage);
+          })
+          res.status(200).json({result: 'hello'});
+        })
+  });
 });
 
+
+
 app.use(express.static("public"));
+app.use('/media', express.static('media'))
 
 // private messages.json
 app.get('/messages.json', function(req, res){
@@ -163,8 +174,6 @@ app.get('/user', function(req, res){
 app.get("*", function(req, res, next) {
   res.sendFile(__dirname + "/public/index.html");
 });
-
-socketListners.applyIo(io);
 
 server.listen(process.env.PORT);
 

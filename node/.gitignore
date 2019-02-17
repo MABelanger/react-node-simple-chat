@@ -3,9 +3,13 @@
 # dependencies
 node_modules/
 
-# database
+# database messages
 db/*
 !db/.gitkeep
+
+# media audio
+media/*
+!media/.gitkeep
 
 # production
 public/

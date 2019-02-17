@@ -22,12 +22,17 @@ function postData(url = ``, data = {}) {
     .then(response => response.json()); // parses response to JSON
 }
 
-function dumpBase64(blob){
+function dumpBase64(blob, username){
+  console.log('______username', username);
   let reader = new FileReader();
   reader.readAsDataURL(blob);
   reader.onloadend = function() {
       let base64data = reader.result;
-      postData('/audio', {dataUri: base64data})
+      let message = {
+        username: username,
+        dataUri: base64data
+      }
+      postData('/audio', message)
         .then((response) => {
           console.log(JSON.stringify(response));
         }) // JSON-string from `response.json()` call
@@ -41,6 +46,7 @@ export class App extends React.Component {
     super(props);
     this.stream = null;
     this.mediaRecorder = null;
+    this.username = 'alex';
     this.chunkRecord = [];
     this.constraints = {
       audio: true,
@@ -95,7 +101,7 @@ export class App extends React.Component {
     let mimeType = this.mediaRecorder.mimeType;
     let blob = new Blob(this.chunkRecord, { 'type' : mimeType });
     this.chunkRecord = [];
-    dumpBase64(blob);
+    dumpBase64(blob, this.username);
     let audioURL = window.URL.createObjectURL(blob);
     this.refAudio.src = audioURL;
   }

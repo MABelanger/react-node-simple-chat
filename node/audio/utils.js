@@ -3,9 +3,11 @@ const fs = require('fs');
 const path = require('path');
 
 function _getCodec (codecMatch) {
-  let codecArray = codecMatch.split("=");
-  if (codecArray.length == 2) {
-    return codecArray[1];
+  if(codecMatch){
+    let codecArray = codecMatch.split("=");
+    if (codecArray.length == 2) {
+      return codecArray[1];
+    }
   }
   return null;
 }
@@ -66,7 +68,7 @@ function saveImage (dataUri) {
       return;
     }
 
-    let relativeFilePath = path.join(__dirname, '../db', fileName);
+    let relativeFilePath = path.join(__dirname, '../media', fileName);
     console.log('relativeFilePath', relativeFilePath);
     fs.writeFile(relativeFilePath, data, function (err) {
       if (err) {
@@ -74,7 +76,8 @@ function saveImage (dataUri) {
         return;
       }
       // let imageInfo = fileInfo.update(relativeFilePath);
-      resolve({bibi: 'bibi'});
+      const audioUrl = '/media/' + fileName;
+      resolve(audioUrl);
     });
   });
 

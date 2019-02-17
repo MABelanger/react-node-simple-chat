@@ -26,19 +26,20 @@ module.exports = function () {
 
   module.appendNewMessage = function(message, cb) {
     let relativeFilePath = path.join(__dirname, '../db', '/messages.json');
+    console.log('relativeFilePath', relativeFilePath);
     fs.access(relativeFilePath, fs.constants.F_OK, (err) => {
       if(err) {
         console.log('fs.access() error!: ', err);
-        fs.writeFile(filePath, '[]', function(err) {
+        fs.writeFile(relativeFilePath, '[]', function(err) {
           if(err) {
             throw err;
           } else {
-            updateFile(message, cb, filePath);
+            updateFile(message, cb, relativeFilePath);
           }
 
         });
       } else {
-        updateFile(message, cb, filePath);
+        updateFile(message, cb, relativeFilePath);
       }
     });
   }
