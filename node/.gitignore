@@ -4,7 +4,8 @@
 node_modules/
 
 # database
-db/
+db/*
+!db/.gitkeep
 
 # production
 public/
