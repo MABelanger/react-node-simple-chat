@@ -59,33 +59,33 @@ function getDataAndFileName (dataUri, fileNumber) {
 }
 
 function saveImage (dataUri) {
-  let fileNumber = 1;
-  let {data, fileName} = getDataAndFileName(dataUri, fileNumber);
-
   let promise = new Promise((resolve, reject) => {
-    if (!data) {
-      reject(new Error('No image or wrong format'));
-      return;
-    }
+    let mediaDir = path.join(__dirname, '../media');
+    fs.readdir(mediaDir, (err, files) => {
+      console.log('files.length', files.length);
+      let {data, fileName} = getDataAndFileName(dataUri, files.length);
 
-    let relativeFilePath = path.join(__dirname, '../media', fileName);
-    console.log('relativeFilePath', relativeFilePath);
-    fs.writeFile(relativeFilePath, data, function (err) {
-      if (err) {
-        reject(err);
+      if (!data) {
+        reject(new Error('No image or wrong format'));
         return;
       }
-      // let imageInfo = fileInfo.update(relativeFilePath);
-      const audioUrl = '/media/' + fileName;
-      resolve(audioUrl);
+
+      let relativeFilePath = path.join(mediaDir, fileName);
+      console.log('relativeFilePath', relativeFilePath);
+      fs.writeFile(relativeFilePath, data, function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        // let imageInfo = fileInfo.update(relativeFilePath);
+        const audioUrl = '/media/' + fileName;
+        resolve(audioUrl);
+      });
     });
   });
 
   return promise;
 }
-
-
-
 
 module.exports = {
   saveImage
