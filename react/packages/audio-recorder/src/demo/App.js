@@ -1,4 +1,6 @@
 import React from 'react';
+import recordButton from './recordButton.svg';
+import stopButton from './stopButton.svg';
 
 function handleError(error) {
   console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
@@ -23,7 +25,6 @@ function postData(url = ``, data = {}) {
 }
 
 function dumpBase64(blob, username){
-  console.log('______username', username);
   let reader = new FileReader();
   reader.readAsDataURL(blob);
   reader.onloadend = function() {
@@ -57,6 +58,10 @@ export class App extends React.Component {
     this.handleRecordButton = this.handleRecordButton.bind(this);
     this.handleStopButton = this.handleStopButton.bind(this);
     this.handleStopStrem = this.handleStopStrem.bind(this);
+    this.state = {
+      isRecording: false,
+      nbSecond: 0
+    }
   }
 
   handleSuccess(stream) {
@@ -81,7 +86,13 @@ export class App extends React.Component {
       this.mediaRecorder.ondataavailable = (e) => {
         console.log('push chunk');
         this.chunkRecord.push(e.data);
+        this.setState(prevState => ({
+          nbSecond: prevState.nbSecond + 1
+        }));
       }
+      this.setState({
+        isRecording: true
+      })
     }
   }
 
@@ -103,19 +114,29 @@ export class App extends React.Component {
     this.chunkRecord = [];
     dumpBase64(blob, this.username);
     let audioURL = window.URL.createObjectURL(blob);
-    this.refAudio.src = audioURL;
+    // this.refAudio.src = audioURL;
+    this.setState({
+      isRecording: false,
+      nbSecond: 0
+    })
   }
 
+/*
+<audio
+  ref={(el) => { this.refAudio = el; }}
+  playsInline
+  controls={true}
+/>
+*/
   render() {
     return (
       <div>
-        <audio
-          ref={(el) => { this.refAudio = el; }}
-          playsInline
-          controls={true}
-        />
-        <button onClick={this.handleRecordButton}>Record</button>
-        <button onClick={this.handleStopButton}>Stop</button>
+        {
+          this.state.isRecording
+            ? <img style={{width: '40px'}} onClick={this.handleStopButton} src={stopButton} />
+            : <img style={{width: '40px'}} onClick={this.handleRecordButton} src={recordButton} />
+        }
+        ({this.state.nbSecond}s)
       </div>
     );
   }

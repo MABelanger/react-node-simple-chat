@@ -22,6 +22,8 @@
     "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
+    "@svgr/webpack": "^4.1.0",
+    "url-loader": "^1.1.2",
     "webpack": "3.8.1",
     "webpack-cli": "^3.1.2",
     "webpack-node-externals": "^1.7.2"

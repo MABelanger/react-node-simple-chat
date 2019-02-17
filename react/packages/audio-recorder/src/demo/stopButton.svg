@@ -1,0 +1,22 @@
+<?xml version="1.0"?><svg width="49.799828" height="49.799828" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <linearGradient id="linearGradient5431">
+   <stop stop-color="#862c2c" id="stop5433" offset="0"/>
+   <stop stop-color="#621b1b" id="stop5435" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient5415">
+   <stop stop-color="#ffdcdc" id="stop5417" offset="0"/>
+   <stop stop-color="#cf7575" id="stop5419" offset="1"/>
+  </linearGradient>
+  <radialGradient gradientTransform="matrix(0.46093451976776123,0,0,0.46093451976776123,-465.1429748535156,-243.4892578125)" r="25.5" fy="347.26965" fx="814.5" cy="347.26965" cx="814.5" gradientUnits="userSpaceOnUse" id="radialGradient2665" xlink:href="#linearGradient5415"/>
+  <linearGradient y2="-0.031273" x2="0.5" y1="1.031227" x1="0.5" id="linearGradient2667" xlink:href="#linearGradient5431"/>
+ </defs>
+ <metadata id="metadata9558">image/svg+xml</metadata>
+ <g>
+  <title>Layer 1</title>
+  <g transform="matrix(1.46678, 0, 0, 1.46678, -365.115, -101.405)" id="Stop">
+   <path fill="url(#radialGradient2665)" fill-rule="nonzero" stroke="url(#linearGradient2667)" stroke-width="2.008375" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" stroke-dashoffset="0" d="m282.192627,86.110031a16.294117,16.294117 0 1 1 -32.588242,0a16.294117,16.294117 0 1 1 32.588242,0z" id="path9492"/>
+   <rect fill="#ffe4e4" fill-rule="nonzero" stroke="#9f2b2b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4" stroke-dashoffset="0" id="rect9494" width="14.901835" height="15.401835" x="258.447615" y="78.409121"/>
+  </g>
+ </g>
+</svg>
