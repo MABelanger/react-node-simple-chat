@@ -1,6 +1,8 @@
 import React from 'react';
 
-import styles from './styles.module.css';
+import styles from '../styles.module.css';
+import Message from './Message';
+import Audio from './Audio';
 
 function Messages({ messages, username }) {
   return messages.map((message, index) => {
@@ -9,17 +11,13 @@ function Messages({ messages, username }) {
     if(message.audioUrl) {
       return (
         <li className={subjectClassName} key={index}>
-          <audio
-            src={message.audioUrl}
-            playsInline
-            controls={true}
-          />
+          <Audio audioUrl={message.audioUrl} />
         </li>
       );
     }
     return (
       <li className={subjectClassName} key={index}>
-        <div dangerouslySetInnerHTML={{ __html: message.content }}></div>
+        <Message content={message.content} />
       </li>
     );
   });
