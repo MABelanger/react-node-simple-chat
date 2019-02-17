@@ -1,0 +1,171 @@
+var express = require("express");
+var app = express();
+var server = require("http").createServer(app);
+var io = require("socket.io")(server);
+var path = require('path');
+var fs = require('fs');
+var passport = require('passport');
+var session = require('express-session');
+var bodyParser = require('body-parser');
+var LocalStrategy = require('passport-local').Strategy
+var FileStore = require('session-file-store')(session);
+var utils = require('./utils');
+var dotenv = require('dotenv');
+
+
+var audioDbUtils = require('./audioDb/utils');
+
+
+// read .env file and add it to process.env
+dotenv.config();
+// use the default env if .env is not set.
+if(!(process.env.NODE_ENV === "development" || process.env.NODE_ENV === "production")) {
+  utils.overwriteEnv('.env.default.development')
+}
+
+if(process.env.USERS){
+  USERS = JSON.parse(process.env.USERS);
+}
+
+var socketListners = require('./socketListners')();
+
+function sendMessagesJson(res) {
+  var usersFilePath = path.join(__dirname, '/db/messages.json');
+  fs.access(usersFilePath, fs.constants.F_OK, (err) => {
+    if(err) {
+      res.json([]);
+    } else {
+      var readable = fs.createReadStream(usersFilePath);
+      readable.pipe(res);
+    }
+  });
+}
+
+function sendUserJson(res, user) {
+  return res.status(200).json(user);
+}
+
+function sendNeedToLogin(res) {
+  var error = {
+    error : 'need to login!'
+  }
+  return res.status(401).json(error);
+}
+
+// body-parser for retrieving form data
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Headers to enable Cross-origin resource sharing (CORS)
+var middlewareCors = require('./middlewares/cors');
+app.use(middlewareCors);
+
+var configSession = {
+  store: new FileStore(),
+  secret: 'keyboard cat',
+  proxy: true,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+    secure: process.env.NODE_ENV !== "development"
+  }
+};
+
+app.use(session(configSession));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+  console.log('serializeUser -> id', user.id);
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  console.log('+++++++ deserializeUser -> id', id);
+  var validUserId = null;
+  for(var i=0; i<USERS.length; i++) {
+    if(id == USERS[i].id) {
+      done(null, USERS[i]);
+    }
+  }
+});
+
+passport.use('local', new LocalStrategy(
+  function (username, password, done) {
+    for(var i=0; i<USERS.length; i++) {
+      if (username === USERS[i].username && password === USERS[i].password) {
+        return done(null, USERS[i]);
+      }
+    }
+    return done(null, false, {"message": "User not found."});
+  })
+);
+
+app.post('/login', function(req, res, next) {
+  passport.authenticate('local', function(error, user, info) {
+    if(error) {
+      return res.status(500).json(error);
+    }
+    if(!user) {
+      var error = {
+        error : 'wrong user or password'
+      }
+      return res.status(401).json(error);
+    }
+    req.login(user, function(err){
+      res.json({user: user});
+    });
+  })(req, res, next);
+});
+
+app.post('/audio', function(req, res, next) {
+    const dataUri = req.body.dataUri;
+    console.log('req.body.dataUri', req.body.dataUri);
+    audioDbUtils.saveImage(dataUri)
+    .then(()=>{
+      console.log('success')
+      res.status(200).json({result: 'hello'});
+    })
+
+    // if (req.body && req.body.dataUri) {
+    //   let dataUri = req.body.dataUri;
+    //   _saveDb(dataUri, res, resolve, reject);
+    // } else {
+    //   _send400Err(res, reject, 'dataUri missing');
+    // }
+});
+
+app.use(express.static("public"));
+
+// private messages.json
+app.get('/messages.json', function(req, res){
+  var isAuthenticated = req.isAuthenticated();
+  if(isAuthenticated) {
+    sendMessagesJson(res);
+  } else {
+    sendNeedToLogin(res);
+  }
+});
+
+app.get('/user', function(req, res){
+  var isAuthenticated = req.isAuthenticated();
+  if(isAuthenticated) {
+    let user = req.user;
+    console.log('user', user);
+    sendUserJson(res, user);
+  } else {
+    sendNeedToLogin(res);
+  }
+});
+
+app.get("*", function(req, res, next) {
+  res.sendFile(__dirname + "/public/index.html");
+});
+
+socketListners.applyIo(io);
+
+server.listen(process.env.PORT);
+
+console.log('server listen on *:' + process.env.PORT)
