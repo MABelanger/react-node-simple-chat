@@ -4,6 +4,8 @@ import Conversation from './Conversation';
 import Form from './Form';
 import Header from './Header';
 import ScroolBottom from './ScroolBottom';
+import AudioRecorder from '@react-simple-chat/audio-recorder';
+
 
 //  add bootstrap
 //  https://github.com/facebook/create-react-app/issues/301
@@ -50,6 +52,7 @@ export class Chat extends React.Component {
         <Header text={this.props.username} />
         <Conversation messages={this.props.messages}
                       username={this.props.username} />
+        <AudioRecorder username={this.props.username} />
         <Form onSend={this.handleSend} />
         <ScroolBottom reference={(el) => { this.refScroolDown = el; }} />
       </div>

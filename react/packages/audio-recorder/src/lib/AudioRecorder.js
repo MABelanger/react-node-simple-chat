@@ -1,10 +1,13 @@
 import React from 'react';
-import recordButton from './recordButton.svg';
-import stopButton from './stopButton.svg';
 
-function handleError(error) {
-  console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
-}
+import AudioRecord from './AudioRecord';
+import AudioPreview from './AudioPreview';
+
+import styles from './styles.module.css';
+
+//  add bootstrap
+//  https://github.com/facebook/create-react-app/issues/301
+import 'bootstrap/dist/css/bootstrap.css';
 
 function postData(url = ``, data = {}) {
   // Default options are marked with *
@@ -24,122 +27,90 @@ function postData(url = ``, data = {}) {
     .then(response => response.json()); // parses response to JSON
 }
 
-function dumpBase64(blob, username){
-  let reader = new FileReader();
-  reader.readAsDataURL(blob);
-  reader.onloadend = function() {
-      let base64data = reader.result;
-      let message = {
-        username: username,
-        dataUri: base64data
-      }
-      postData('/audio', message)
-        .then((response) => {
-          console.log(JSON.stringify(response));
-        }) // JSON-string from `response.json()` call
-        .catch(error => console.error(error));
-  }
+function sendAudio(blob, username){
+  let promise = new Promise((resolve, reject) => {
+    let reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = function() {
+        let base64data = reader.result;
+        let message = {
+          username: username,
+          dataUri: base64data
+        }
+        postData('/audio', message)
+          .then((response) => {
+            resolve(response);
+          }) // JSON-string from `response.json()` call
+          .catch((error) => {
+            reject(error)
+            console.error(error)
+          });
+    }
+  });
+  return promise;
 }
 
-export class App extends React.Component {
+export class AudioRecorder extends React.Component {
 
   constructor(props) {
     super(props);
-    this.stream = null;
-    this.mediaRecorder = null;
-    this.username = 'alex';
-    this.chunkRecord = [];
-    this.constraints = {
-      audio: true,
-      video: false
-    }
-    this.handleSuccess = this.handleSuccess.bind(this);
-    this.componentDidMount = this.componentDidMount.bind(this);
-    this.handleRecordButton = this.handleRecordButton.bind(this);
-    this.handleStopButton = this.handleStopButton.bind(this);
-    this.handleStopStrem = this.handleStopStrem.bind(this);
+    this.handleStopStream = this.handleStopStream.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleSend = this.handleSend.bind(this);
     this.state = {
-      isRecording: false,
-      nbSecond: 0
-    }
-  }
-
-  handleSuccess(stream) {
-    const audioTracks = stream.getAudioTracks();
-    console.log('Got stream with constraints:', this.constraints);
-    console.log('Using audio device: ' + audioTracks[0].label);
-    stream.oninactive = function() {
-      console.log('Stream ended');
+      blob: null,
+      isShowMicrophone: true
     };
-    this.stream = stream;
-    // let recordOptions = {
-    //   audioBitsPerSecond : 128000,
-    //   mimeType : 'audio/ogg'
-    // }
-    this.mediaRecorder = new MediaRecorder(stream);
   }
 
-  handleRecordButton() {
-    if(this.mediaRecorder.state == 'inactive'){
-      this.mediaRecorder.start(1000); // update chunk each second. (1000ms)
-      this.mediaRecorder.onstop = this.handleStopStrem;
-      this.mediaRecorder.ondataavailable = (e) => {
-        console.log('push chunk');
-        this.chunkRecord.push(e.data);
-        this.setState(prevState => ({
-          nbSecond: prevState.nbSecond + 1
-        }));
-      }
-      this.setState({
-        isRecording: true
-      })
-    }
-  }
-
-  handleStopButton() {
-    console.log('this.mediaRecorder.state', this.mediaRecorder.state);
-    if(this.mediaRecorder.state == 'recording'){
-      this.mediaRecorder.stop();
-    }
-  }
-
-  componentDidMount(){
-    navigator.mediaDevices.getUserMedia(this.constraints).then(this.handleSuccess).catch(handleError);
-  }
-
-  handleStopStrem(){
-    console.log("recorder stopped");
-    let mimeType = this.mediaRecorder.mimeType;
-    let blob = new Blob(this.chunkRecord, { 'type' : mimeType });
-    this.chunkRecord = [];
-    dumpBase64(blob, this.username);
-    let audioURL = window.URL.createObjectURL(blob);
-    // this.refAudio.src = audioURL;
+  handleStopStream(blob) {
     this.setState({
-      isRecording: false,
-      nbSecond: 0
+      blob,
+      isShowMicrophone: false
     })
   }
 
-/*
-<audio
-  ref={(el) => { this.refAudio = el; }}
-  playsInline
-  controls={true}
-/>
-*/
+  handleDelete() {
+    this.setState({
+      blob: null,
+      isShowMicrophone: true
+    });
+  }
+
+  handleSend() {
+    sendAudio(this.state.blob, this.props.username)
+      .then((response)=>{
+        console.log(JSON.stringify(response));
+        this.setState({
+          blob: null,
+          isShowMicrophone: true
+        });
+      })
+      .catch(()=>{})
+
+  }
+
   render() {
     return (
       <div>
+        <AudioRecord onStopStream={this.handleStopStream}
+                     isShowMicrophone={this.state.isShowMicrophone} />
         {
-          this.state.isRecording
-            ? <img style={{width: '40px'}} onClick={this.handleStopButton} src={stopButton} />
-            : <img style={{width: '40px'}} onClick={this.handleRecordButton} src={recordButton} />
+          this.state.blob &&
+            <button className={styles['button-delete']} onClick={this.handleDelete}>X</button>
         }
-        ({ this.state.nbSecond }s)
+        {
+          this.state.blob &&
+            <AudioPreview blob={this.state.blob} />
+        }
+
+        {
+          this.state.blob &&
+            <button className={styles['button-send']} onClick={this.handleSend}>Send</button>
+        }
       </div>
     );
   }
 }
 
-export default App;
+export default AudioRecorder;

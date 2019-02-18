@@ -1,0 +1,41 @@
+.button-delete {
+	background-color:#F38A8E;
+	-moz-border-radius:28px;
+	-webkit-border-radius:28px;
+	border-radius:28px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:16px 31px;
+	text-decoration:none;
+}
+.button-delete:hover {
+	background-color:#f46b70;
+}
+.button-delete:active {
+	position:relative;
+	top:1px;
+}
+
+.button-send {
+	background-color:#0084ff;
+	-moz-border-radius:28px;
+	-webkit-border-radius:28px;
+	border-radius:28px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:16px 31px;
+	text-decoration:none;
+}
+.button-send:hover {
+	background-color:#006BE6;
+}
+.button-send:active {
+	position:relative;
+	top:1px;
+}
