@@ -12,7 +12,9 @@
     "url": "URL_OF_YOUR_REPOSITORY"
   },
   "private": true,
+  "proxy": "http://localhost:5000",
   "dependencies": {
+    "@react-simple-chat/audio-recorder": "0.1.0",
     "bootstrap": "^4.3.1",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",

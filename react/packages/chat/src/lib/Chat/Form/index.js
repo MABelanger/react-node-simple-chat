@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from './styles.module.css';
 
+import AudioRecorder from '@react-simple-chat/audio-recorder';
+
 import * as utils from './utils';
 
 export class Form extends React.Component {
@@ -39,6 +41,7 @@ export class Form extends React.Component {
     return(
       <div className={styles["form"]}>
         <form className={styles["InputAddOn"]} autoComplete="off">
+          <AudioRecorder />
           <textarea className={styles["InputAddOn-field"]}
                  id="content"
                  type="text"
