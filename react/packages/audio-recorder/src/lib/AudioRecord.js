@@ -118,7 +118,6 @@ export class App extends React.Component {
               </div>
             : this.props.isShowMicrophone && <img style={{width: '40px'}} onClick={this.handleRecordButton} src={microphone} />
         }
-
       </div>
     );
   }
