@@ -148,7 +148,17 @@ io.on("connection", function(client) {
 
 
 app.use(express.static("public"));
-app.use('/media', express.static('media'))
+
+function isAuthenticated(req, res, next) {
+    if (req.isAuthenticated()){
+      return next();
+    }
+    else {
+      res.redirect('/');
+    }
+}
+
+app.use('/media', isAuthenticated, express.static('media'))
 
 // private messages.json
 app.get('/messages.json', function(req, res){
