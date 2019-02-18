@@ -1,12 +1,6 @@
 import React from 'react';
-import recordButton from './recordButton.svg';
 import stopButton from './stopButton.svg';
-import microphone from './microphone.svg';
-
-
-function handleError(error) {
-  console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
-}
+import recordButton from './recordButton.svg';
 
 function renderSecond(nbSecond) {
   return (
@@ -20,15 +14,7 @@ export class App extends React.Component {
 
   constructor(props) {
     super(props);
-    this.stream = null;
-    this.mediaRecorder = null;
-    this.username = 'alex';
     this.chunkRecord = [];
-    this.constraints = {
-      audio: true,
-      video: false
-    }
-    this.handleSuccess = this.handleSuccess.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.handleRecordButton = this.handleRecordButton.bind(this);
     this.handleStopButton = this.handleStopButton.bind(this);
@@ -39,24 +25,11 @@ export class App extends React.Component {
     }
   }
 
-  handleSuccess(stream) {
-    const audioTracks = stream.getAudioTracks();
-    console.log('Got stream with constraints:', this.constraints);
-    console.log('Using audio device: ' + audioTracks[0].label);
-    stream.oninactive = function() {
-      console.log('Stream ended');
-    };
-    this.stream = stream;
-    // let recordOptions = {
-    //   audioBitsPerSecond : 128000,
-    //   mimeType : 'audio/ogg'
-    // }
-    this.mediaRecorder = new MediaRecorder(stream);
-
-    if(this.mediaRecorder.state == 'inactive'){
-      this.mediaRecorder.start(1000); // update chunk each second. (1000ms)
-      this.mediaRecorder.onstop = this.handleStopStrem;
-      this.mediaRecorder.ondataavailable = (e) => {
+  handleRecordButton() {
+    if(this.props.mediaRecorder.state == 'inactive'){
+      this.props.mediaRecorder.start(1000); // update chunk each second. (1000ms)
+      this.props.mediaRecorder.onstop = this.handleStopStrem;
+      this.props.mediaRecorder.ondataavailable = (e) => {
         console.log('push chunk');
         this.chunkRecord.push(e.data);
         this.setState(prevState => ({
@@ -67,17 +40,12 @@ export class App extends React.Component {
         isRecording: true
       })
     }
-
-  }
-
-  handleRecordButton() {
-    navigator.mediaDevices.getUserMedia(this.constraints).then(this.handleSuccess).catch(handleError);
   }
 
   handleStopButton() {
-    console.log('this.mediaRecorder.state', this.mediaRecorder.state);
-    if(this.mediaRecorder.state == 'recording'){
-      this.mediaRecorder.stop();
+    console.log('this.props.mediaRecorder.state', this.props.mediaRecorder.state);
+    if(this.props.mediaRecorder.state == 'recording'){
+      this.props.mediaRecorder.stop();
     }
   }
 
@@ -87,12 +55,10 @@ export class App extends React.Component {
 
   handleStopStrem(){
     console.log("recorder stopped");
-    let mimeType = this.mediaRecorder.mimeType;
+    let mimeType = this.props.mediaRecorder.mimeType;
     let blob = new Blob(this.chunkRecord, { 'type' : mimeType });
     this.chunkRecord = [];
     this.props.onStopStream(blob);
-
-    // send blob...
 
     this.setState({
       isRecording: false,
@@ -116,7 +82,7 @@ export class App extends React.Component {
                 <img style={{width: '40px'}} onClick={this.handleStopButton} src={stopButton} />
                 { renderSecond(this.state.nbSecond) }
               </div>
-            : this.props.isShowMicrophone && <img style={{width: '40px'}} onClick={this.handleRecordButton} src={microphone} />
+            : this.props.isShowMicrophone && <img style={{width: '40px'}} onClick={this.handleRecordButton} src={recordButton} />
         }
       </div>
     );

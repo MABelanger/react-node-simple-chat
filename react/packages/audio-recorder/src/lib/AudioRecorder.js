@@ -2,6 +2,7 @@ import React from 'react';
 
 import AudioRecord from './AudioRecord';
 import AudioPreview from './AudioPreview';
+import microphone from './microphone.svg';
 
 import styles from './styles.module.css';
 
@@ -50,6 +51,10 @@ function sendAudio(blob, username){
   return promise;
 }
 
+function handleError(error) {
+  console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
+}
+
 export class AudioRecorder extends React.Component {
 
   constructor(props) {
@@ -57,9 +62,18 @@ export class AudioRecorder extends React.Component {
     this.handleStopStream = this.handleStopStream.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleSend = this.handleSend.bind(this);
+    this.handleEnableRecord = this.handleEnableRecord.bind(this);
+    this.handleSuccess = this.handleSuccess.bind(this);
+    this.constraints = {
+      audio: true,
+      video: false
+    };
+    this.stream = null;
     this.state = {
       blob: null,
-      isShowMicrophone: true
+      isShowMicrophone: true,
+      mediaRecorder: null,
+      isEnableRecord: false
     };
   }
 
@@ -75,6 +89,30 @@ export class AudioRecorder extends React.Component {
       blob: null,
       isShowMicrophone: true
     });
+  }
+
+  handleSuccess(stream) {
+    const audioTracks = stream.getAudioTracks();
+    console.log('Got stream with constraints:', this.constraints);
+    console.log('Using audio device: ' + audioTracks[0].label);
+    stream.oninactive = function() {
+      console.log('Stream ended');
+    };
+    this.stream = stream;
+    // let recordOptions = {
+    //   audioBitsPerSecond : 128000,
+    //   mimeType : 'audio/ogg'
+    // }
+    let mediaRecorder = new MediaRecorder(stream);
+
+    this.setState({
+      mediaRecorder,
+      isEnableRecord: true
+    });
+  }
+
+  handleEnableRecord() {
+    navigator.mediaDevices.getUserMedia(this.constraints).then(this.handleSuccess).catch(handleError);
   }
 
   handleSend() {
@@ -93,8 +131,14 @@ export class AudioRecorder extends React.Component {
   render() {
     return (
       <div>
-        <AudioRecord onStopStream={this.handleStopStream}
-                     isShowMicrophone={this.state.isShowMicrophone} />
+        {
+          this.state.isEnableRecord
+            ? <AudioRecord onStopStream={this.handleStopStream}
+                           mediaRecorder={this.state.mediaRecorder}
+                           isShowMicrophone={this.state.isShowMicrophone}/>
+            : <img style={{width: '40px'}} onClick={this.handleEnableRecord} src={microphone} />
+        }
+
         {
           this.state.blob &&
             <button className={styles['button-delete']} onClick={this.handleDelete}>Delete</button>
