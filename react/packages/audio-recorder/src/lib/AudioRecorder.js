@@ -97,7 +97,7 @@ export class AudioRecorder extends React.Component {
                      isShowMicrophone={this.state.isShowMicrophone} />
         {
           this.state.blob &&
-            <button className={styles['button-delete']} onClick={this.handleDelete}>X</button>
+            <button className={styles['button-delete']} onClick={this.handleDelete}>Delete</button>
         }
         {
           this.state.blob &&

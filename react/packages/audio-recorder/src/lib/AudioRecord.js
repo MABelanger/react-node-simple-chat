@@ -10,7 +10,7 @@ function handleError(error) {
 
 function renderSecond(nbSecond) {
   return (
-    <div>
+    <div style={{display: 'inline'}}>
       ({ nbSecond }s)
     </div>
   )
@@ -52,9 +52,7 @@ export class App extends React.Component {
     //   mimeType : 'audio/ogg'
     // }
     this.mediaRecorder = new MediaRecorder(stream);
-  }
 
-  handleRecordButton() {
     if(this.mediaRecorder.state == 'inactive'){
       this.mediaRecorder.start(1000); // update chunk each second. (1000ms)
       this.mediaRecorder.onstop = this.handleStopStrem;
@@ -69,6 +67,11 @@ export class App extends React.Component {
         isRecording: true
       })
     }
+
+  }
+
+  handleRecordButton() {
+    navigator.mediaDevices.getUserMedia(this.constraints).then(this.handleSuccess).catch(handleError);
   }
 
   handleStopButton() {
@@ -79,7 +82,7 @@ export class App extends React.Component {
   }
 
   componentDidMount(){
-    navigator.mediaDevices.getUserMedia(this.constraints).then(this.handleSuccess).catch(handleError);
+
   }
 
   handleStopStrem(){
@@ -109,8 +112,10 @@ export class App extends React.Component {
       <div style={{display:'inline'}}>
         {
           this.state.isRecording
-            ? <div><img style={{width: '40px'}} onClick={this.handleStopButton} src={stopButton} />
-              {renderSecond(this.state.nbSecond)}</div>
+            ? <div style={{display: 'inline'}}>
+                <img style={{width: '40px'}} onClick={this.handleStopButton} src={stopButton} />
+                { renderSecond(this.state.nbSecond) }
+              </div>
             : this.props.isShowMicrophone && <img style={{width: '40px'}} onClick={this.handleRecordButton} src={microphone} />
         }
 
