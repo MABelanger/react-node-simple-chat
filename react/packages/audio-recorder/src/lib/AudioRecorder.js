@@ -1,5 +1,14 @@
 import React from 'react';
 
+
+import OpusMediaRecorder from 'opus-media-recorder';
+// Use worker-loader
+import Worker from 'opus-media-recorder/encoderWorker.js';
+// Use file-loader that returns URL path
+import OggOpusWasm from 'opus-media-recorder/OggOpusEncoder.wasm';
+import WebMOpusWasm from 'opus-media-recorder/WebMOpusEncoder.wasm';
+
+
 import AudioRecord from './AudioRecord';
 import AudioPreview from './AudioPreview';
 import microphone from './microphone.svg';
@@ -55,6 +64,18 @@ function handleError(error) {
   console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
 }
 
+function EnableOpusMediaRecorder() {
+  // Check if MediaRecorder available.
+  if (!window.MediaRecorder) {
+    window.MediaRecorder = OpusMediaRecorder;
+  }
+  // Check if a target format (e.g. audio/ogg) is supported.
+  else if (!window.MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) {
+    window.MediaRecorder = OpusMediaRecorder;
+  }
+}
+
+
 export class AudioRecorder extends React.Component {
 
   constructor(props) {
@@ -75,6 +96,7 @@ export class AudioRecorder extends React.Component {
       mediaRecorder: null,
       isEnableRecord: false
     };
+    EnableOpusMediaRecorder();
   }
 
   handleStopStream(blob) {

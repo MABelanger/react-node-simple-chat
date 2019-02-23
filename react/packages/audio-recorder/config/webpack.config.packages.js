@@ -36,6 +36,14 @@ var createWebpackConfig = {
         {
           test: /\.svg$/,
           use: ['@svgr/webpack', 'url-loader'],
+        },
+        {
+          test: /opus-media-recorder\/encoderWorker\.js$/,
+          loader: 'worker-loader'
+        },
+        {
+          test: /opus-media-recorder\/.*\.wasm$/,
+          loader: 'file-loader'
         }
       ]
     },
