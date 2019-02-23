@@ -69,10 +69,11 @@ function EnableOpusMediaRecorder() {
   if (!window.MediaRecorder) {
     window.MediaRecorder = OpusMediaRecorder;
   }
+  window.MediaRecorder = OpusMediaRecorder;
   // Check if a target format (e.g. audio/ogg) is supported.
-  else if (!window.MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) {
-    window.MediaRecorder = OpusMediaRecorder;
-  }
+  // else if (!window.MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) {
+  //   window.MediaRecorder = OpusMediaRecorder;
+  // }
 }
 
 
@@ -96,7 +97,8 @@ export class AudioRecorder extends React.Component {
       mediaRecorder: null,
       isEnableRecord: false
     };
-    EnableOpusMediaRecorder();
+    // window.MediaRecorder = OpusMediaRecorder;
+    console.log('window', window);
   }
 
   handleStopStream(blob) {
@@ -125,7 +127,19 @@ export class AudioRecorder extends React.Component {
     //   audioBitsPerSecond : 128000,
     //   mimeType : 'audio/ogg'
     // }
-    let mediaRecorder = new MediaRecorder(stream);
+
+
+    // Non-standard options
+    const workerOptions = {
+      encoderWorkerFactory: _ => new Worker(),
+      OggOpusEncoderWasmPath: OggOpusWasm,
+      WebMOpusEncoderWasmPath: WebMOpusWasm
+    };
+
+
+    let mediaRecorder = new OpusMediaRecorder(stream, {}, workerOptions);
+
+    // let mediaRecorder = new MediaRecorder(stream);
 
     this.setState({
       mediaRecorder,
