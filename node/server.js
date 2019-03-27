@@ -54,7 +54,7 @@ function sendNeedToLogin(res) {
 }
 
 // body-parser for retrieving form data
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '500mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Headers to enable Cross-origin resource sharing (CORS)
