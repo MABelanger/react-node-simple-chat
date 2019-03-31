@@ -5,11 +5,10 @@ module.exports = function () {
 
   module.applyClient = function(client) {
 
-      var currentDate = JSON.stringify(new Date());
-      console.log("Client connected: " + currentDate);
+      // var currentDate = JSON.stringify(new Date());
 
       client.on("join", function(data) {
-        console.log(data);
+        // console.log(data);
       });
 
       client.on("message", function(message) {

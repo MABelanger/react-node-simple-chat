@@ -59,11 +59,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Headers to enable Cross-origin resource sharing (CORS)
 var middlewareCors = require('./middlewares/cors');
+var middlewareUserAgent = require('./middlewares/userAgent');
+
 app.use(middlewareCors);
+app.use(middlewareUserAgent);
 
 var configSession = {
   store: new FileStore(),
-  secret: 'keyboard cat',
+  secret: process.env.SESSION_SECRET,
   proxy: true,
   resave: false,
   saveUninitialized: true,
@@ -79,12 +82,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function(user, done) {
-  console.log('serializeUser -> id', user.id);
   done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
-  console.log('+++++++ deserializeUser -> id', id);
   var validUserId = null;
   for(var i=0; i<USERS.length; i++) {
     if(id == USERS[i].id) {
@@ -175,6 +176,7 @@ app.get('/user', function(req, res){
   if(isAuthenticated) {
     let user = req.user;
     console.log('user', user);
+    console.log('res.locals.ua', res.locals.ua);
     sendUserJson(res, user);
   } else {
     sendNeedToLogin(res);
