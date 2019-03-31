@@ -80,8 +80,9 @@ export class AudioRecorder extends React.Component {
   handleStopStream(blob) {
     this.setState({
       blob,
-      isShowMicrophone: false
+      isShowMicrophone: true
     })
+    this.handleSend()
   }
 
   handleDelete() {
@@ -136,21 +137,17 @@ export class AudioRecorder extends React.Component {
             ? <AudioRecord onStopStream={this.handleStopStream}
                            mediaRecorder={this.state.mediaRecorder}
                            isShowMicrophone={this.state.isShowMicrophone}/>
-            : <img style={{width: '40px'}} onClick={this.handleEnableRecord} src={microphone} />
+            : <img style={{width: '80px'}} onClick={this.handleEnableRecord} src={microphone} />
         }
 
         {
-          this.state.blob &&
-            <button className={styles['button-delete']} onClick={this.handleDelete}>Delete</button>
-        }
-        {
-          this.state.blob &&
-            <AudioPreview blob={this.state.blob} />
+          // this.state.blob &&
+          //   <AudioPreview blob={this.state.blob} />
         }
 
         {
-          this.state.blob &&
-            <button className={styles['button-send']} onClick={this.handleSend}>Send</button>
+          // this.state.blob &&
+          //   <button className={styles['button-send']} onClick={this.handleSend}>Send</button>
         }
       </div>
     );

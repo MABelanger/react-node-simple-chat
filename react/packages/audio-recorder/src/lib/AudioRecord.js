@@ -4,7 +4,7 @@ import recordButton from './recordButton.svg';
 
 function renderSecond(nbSecond) {
   return (
-    <div style={{display: 'inline'}}>
+    <div style={{display: 'inline', fontSize: '30px'}}>
       ({ nbSecond }s)
     </div>
   )
@@ -73,16 +73,17 @@ export class App extends React.Component {
   controls={true}
 />
 */
+
   render() {
     return (
       <div style={{display:'inline'}}>
         {
           this.state.isRecording
             ? <div style={{display: 'inline'}}>
-                <img style={{width: '40px'}} onClick={this.handleStopButton} src={stopButton} />
+                <img style={{width: '80px'}} onClick={this.handleStopButton} src={stopButton} />
                 { renderSecond(this.state.nbSecond) }
               </div>
-            : this.props.isShowMicrophone && <img style={{width: '40px'}} onClick={this.handleRecordButton} src={recordButton} />
+            : this.props.isShowMicrophone && <img style={{width: '80px'}} onClick={this.handleRecordButton} src={recordButton} />
         }
       </div>
     );
