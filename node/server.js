@@ -159,7 +159,20 @@ function isAuthenticated(req, res, next) {
     }
 }
 
-app.use('/media', isAuthenticated, express.static('media'))
+function logMedia(req, res, next) {
+
+  let log = {
+    date: new Date(new Date().getTime() - 1000*60*60*4),
+    username: req.user.username,
+    url: req.url
+  };
+
+  console.log('log', JSON.stringify(log));
+
+  return next();
+
+}
+app.use('/media', isAuthenticated, logMedia, express.static('media'))
 
 // private messages.json
 app.get('/messages.json', function(req, res){
