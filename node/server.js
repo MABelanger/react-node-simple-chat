@@ -164,7 +164,8 @@ function logMedia(req, res, next) {
   let log = {
     date: new Date(new Date().getTime() - 1000*60*60*4),
     username: req.user.username,
-    url: req.url
+    url: req.url,
+    userAgent: res.locals.ua
   };
 
   console.log('log', JSON.stringify(log));
