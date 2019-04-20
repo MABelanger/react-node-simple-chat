@@ -3,7 +3,8 @@ import React from 'react';
 import styles from '../styles.module.css';
 import Message from './Message';
 import Audio from './Audio';
-import * as utils from './utils';
+import InfoDate from './InfoDate';
+
 
 function Messages({ messages, username }) {
   return messages.map((message, index) => {
@@ -17,9 +18,7 @@ function Messages({ messages, username }) {
             <Audio audioUrl={message.audioUrl} />
           </li>
           <li className={`${styles['date']} ${dateClassName}`}>
-            {
-              utils.timeDifference(new Date(), message.date)
-            }
+            <InfoDate messageDate={message.date} />
           </li>
         </React.Fragment>
       );
@@ -30,9 +29,7 @@ function Messages({ messages, username }) {
           <Message content={message.content} />
         </li>
         <li className={`${styles['date']} ${dateClassName}`}>
-          {
-            utils.timeDifference(new Date(), message.date)
-          }
+          <InfoDate messageDate={message.date} />
         </li>
       </React.Fragment>
     );

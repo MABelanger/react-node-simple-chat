@@ -9,6 +9,10 @@ export function timeDifference(current, previous) {
 
     let elapsed = current - previous;
 
+    if (elapsed < 0) {
+         return Math.round(0) + ' seconds ago';
+    }
+
     if (elapsed < msPerMinute) {
          return Math.round(elapsed/1000) + ' seconds ago';
     }
