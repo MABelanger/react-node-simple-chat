@@ -16,7 +16,7 @@ function Messages({ messages, username }) {
           <li className={subjectClassName} key={index}>
             <Audio audioUrl={message.audioUrl} />
           </li>
-          <li className={dateClassName}>
+          <li className={`${styles['date']} ${dateClassName}`}>
             {
               utils.timeDifference(new Date(), message.date)
             }
@@ -29,7 +29,7 @@ function Messages({ messages, username }) {
         <li className={subjectClassName}>
           <Message content={message.content} />
         </li>
-        <li className={dateClassName}>
+        <li className={`${styles['date']} ${dateClassName}`}>
           {
             utils.timeDifference(new Date(), message.date)
           }
