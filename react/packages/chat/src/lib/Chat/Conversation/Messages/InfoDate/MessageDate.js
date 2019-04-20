@@ -1,11 +1,12 @@
 import React from 'react';
 import * as utils from './utils';
+import styles from './styles.module.css';
 
-function InfoDate({ messageDate }) {
+function MessageDate({ messageDate }) {
   // let currentDate = new Date(new Date().getDate());
   let currentDate = new Date();
   return (
-    <div>
+    <div className={styles['info-date']}>
       {
         utils.timeDifference(currentDate, messageDate)
       }
@@ -13,4 +14,4 @@ function InfoDate({ messageDate }) {
   );
 }
 
-export default InfoDate;
+export default MessageDate;

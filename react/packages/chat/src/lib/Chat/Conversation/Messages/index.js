@@ -5,7 +5,6 @@ import Message from './Message';
 import Audio from './Audio';
 import InfoDate from './InfoDate';
 
-
 function Messages({ messages, username }) {
   return messages.map((message, index) => {
     const subjectClassName = (username == message.username) ? styles['me'] : styles['him'];
@@ -18,7 +17,9 @@ function Messages({ messages, username }) {
             <Audio audioUrl={message.audioUrl} />
           </li>
           <li className={`${styles['date']} ${dateClassName}`}>
-            <InfoDate messageDate={message.date} />
+            <InfoDate messageDate={message.date}
+                      seenDate={message.date}
+            />
           </li>
         </React.Fragment>
       );
@@ -29,7 +30,9 @@ function Messages({ messages, username }) {
           <Message content={message.content} />
         </li>
         <li className={`${styles['date']} ${dateClassName}`}>
-          <InfoDate messageDate={message.date} />
+          <InfoDate messageDate={message.date}
+                    seenDate={message.date}
+          />
         </li>
       </React.Fragment>
     );
