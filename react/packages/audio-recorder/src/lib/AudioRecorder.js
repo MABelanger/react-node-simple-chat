@@ -36,7 +36,8 @@ function sendAudio(blob, username){
         let base64data = reader.result;
         let message = {
           username: username,
-          dataUri: base64data
+          dataUri: base64data,
+          date: new Date()
         }
         postData('/audio', message)
           .then((response) => {

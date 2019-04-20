@@ -29,6 +29,40 @@
   color: #fff;
 }
 
+.conversation .date-me {
+  float: right;
+  margin-right: 10px;
+  text-align: right;
+
+  background: none;
+  color: gray;
+  position:relative;
+  display:inline-block;
+  clear: both;
+  padding: 0;
+  width: auto;
+  border-radius: 0;
+  margin-bottom: 10px;
+
+}
+
+.conversation .date-him {
+  float: left;
+  margin-left: 10px;
+  text-align: left;
+
+  background: none;
+  color: gray;
+  position:relative;
+  display:inline-block;
+  clear: both;
+  padding: 0;
+  width: auto;
+  border-radius: 0;
+  margin-bottom: 10px;
+
+}
+
 .conversation .him + .me{
   border-bottom-right-radius: 5px;
 }
