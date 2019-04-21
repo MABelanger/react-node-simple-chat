@@ -9,11 +9,15 @@ function promiseUser(){
   return fetch('/user',{
     credentials: 'include'
   })
-    .then((response)=>{
-      if(response) {
-        return response.json()
+    .then(async (response)=>{
+      try {
+        let jsonResponse = await response.json()
+        return Promise.resolve(jsonResponse)
+
+      } catch(e) {
+        return Promise.reject('/user parsing error');
       }
-    })
+    });
 }
 
 const INIT_STATE = {
@@ -28,19 +32,23 @@ export class UserWrapper extends React.Component {
   }
 
   componentDidMount() {
-    promiseUser().then((user)=>{
-      if(!user.error) {
-        this.setState({
-          username: user.username,
-          isInitState: false
-        });
-      } else {
-        this.setState({
-          username: null,
-          isInitState: false
-        });
-      }
-    });
+    promiseUser()
+      .then((user)=>{
+        if(!user.error) {
+          this.setState({
+            username: user.username,
+            isInitState: false
+          });
+        } else {
+          this.setState({
+            username: null,
+            isInitState: false
+          });
+        }
+      })
+      .catch((error)=>{
+        console.error(error);
+      });
   }
 
   componentDidUpdate() {
