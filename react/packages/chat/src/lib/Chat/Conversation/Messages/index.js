@@ -7,10 +7,11 @@ import { InfoDate, SeenDate } from './InfoDate';
 
 function Messages({ messages, username }) {
   let totalMessageNumber = messages.length;
-  console.log('totalMessageNumber', totalMessageNumber);
+
   return messages.map((message, index) => {
     const subjectClassName = (username == message.username) ? styles['me'] : styles['him'];
     const dateClassName = (username == message.username) ? styles['date-me'] : styles['date-him'];
+    const seenDateIsoClassName = styles['date-me'];
 
     const isShowSeenDate = totalMessageNumber -1 == index;
     if(message.audioUrl) {
@@ -20,9 +21,7 @@ function Messages({ messages, username }) {
             <Audio audioUrl={message.audioUrl} />
           </li>
           <li className={`${styles['date']} ${dateClassName}`}>
-            <InfoDate messageDate={message.date}
-                      seenDate={message.date}
-            />
+            <InfoDate messageDateIso={message.sendDateIso} />
           </li>
         </React.Fragment>
       );
@@ -34,18 +33,16 @@ function Messages({ messages, username }) {
             <Message content={message.content} />
           </li>
           <li className={`${styles['date']} ${dateClassName}`}>
-            <InfoDate messageDate={message.date}
-                      seenDate={message.date}
-            />
+            <InfoDate messageDateIso={message.sendDateIso} />
           </li>
         </React.Fragment>
       );
     }
-    if(message.seenDate){
+    if(message.seenDateIso){
       return (
         <React.Fragment key={index}>
-          <li className={`${styles['date']} ${dateClassName}`}>
-            <SeenDate seenDate={message.seenDate}
+          <li className={`${styles['date']} ${seenDateIsoClassName}`}>
+            <SeenDate seenDateIso={message.seenDateIso}
                       isShow={isShowSeenDate} />
           </li>
         </React.Fragment>

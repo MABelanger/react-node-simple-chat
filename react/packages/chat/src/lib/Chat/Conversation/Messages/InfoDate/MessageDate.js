@@ -2,13 +2,13 @@ import React from 'react';
 import * as utils from './utils';
 import styles from './styles.module.css';
 
-function MessageDate({ messageDate }) {
+function MessageDate({ messageDateIso }) {
   // let currentDate = new Date(new Date().getDate());
   let currentDate = new Date();
   return (
     <div className={styles['info-date']}>
       {
-        utils.timeDifference(currentDate, messageDate)
+        utils.timeDifference(currentDate, new Date(messageDateIso))
       }
     </div>
   );

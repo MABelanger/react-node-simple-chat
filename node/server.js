@@ -127,13 +127,14 @@ io.on("connection", function(client) {
   socketListners.applyClient(client);
   app.post('/audio', function(req, res, next) {
       const message = req.body;
-      const { username, date, content, dataUri } = message;
+      const { username, sendDateIso, content, dataUri } = message;
+      console.log('sendDateIso', sendDateIso);
       audioUtils.saveAudio(dataUri, username)
         .then((audioUrl)=>{
           console.log('success saved audio');
           const stripedDataUriMessage = {
             username,
-            date,
+            sendDateIso,
             content,
             audioUrl
           };

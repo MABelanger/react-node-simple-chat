@@ -4,7 +4,7 @@ export function isEnableSendSeen(messages, currentUsername) {
   }
   let indexLast = messages.length - 1;
   let lastUsername = messages[indexLast].username;
-  let isSeenDate = !!messages[indexLast].seenDate;
+  let isSeenDate = !!messages[indexLast].seenDateIso;
 
   return (!isSeenDate && (currentUsername != lastUsername));
 }

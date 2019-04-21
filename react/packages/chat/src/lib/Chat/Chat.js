@@ -38,30 +38,32 @@ export class Chat extends React.Component {
     }
     let message = {
       username: this.props.username,
-      date: new Date(),
+      sendDateIso: new Date().toISOString(),
       content: content
     };
     this.props.onSend(message);
   }
 
-  handleSendSeen(seenDate) {
+  handleSendSeen(seenDateIso) {
     // send only if not seen
     if(this.props.messages.length < 1) {
       return false;
     }
 
     let indexLast = this.props.messages.length - 1;
-    if(this.props.messages && this.props.messages[indexLast].seenDate) {
+    if(this.props.messages && this.props.messages[indexLast].seenDateIso) {
       return false;
     }
-    if(!utils.isEnableSendSeen(this.props.messages, this.props.username + '1')) {
+
+    if(!utils.isEnableSendSeen(this.props.messages, this.props.username)) {
       return false;
     }
 
     let message = {
       username: this.props.username,
-      seenDate: seenDate
+      seenDateIso: seenDateIso
     };
+
     this.props.onSend(message);
 
   }

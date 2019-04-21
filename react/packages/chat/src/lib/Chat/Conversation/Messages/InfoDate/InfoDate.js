@@ -2,12 +2,12 @@ import React from 'react';
 
 import MessageDate from './MessageDate';
 
-function InfoDate({ messageDate }) {
+function InfoDate({ messageDateIso }) {
   // let currentDate = new Date(new Date().getDate());
   let currentDate = new Date();
   return (
     <div>
-      <MessageDate messageDate={messageDate} />
+      <MessageDate messageDateIso={messageDateIso} />
       .
     </div>
   );

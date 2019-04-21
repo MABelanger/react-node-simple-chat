@@ -38,9 +38,8 @@ export class Form extends React.Component {
 
   handleSendSeen(e) {
     e.preventDefault();
-    console.log('seen')
-    let seenDate = new Date().toISOString()
-    this.props.onSendSeen(seenDate);
+    let seenDateIso = new Date().toISOString()
+    this.props.onSendSeen(seenDateIso);
   }
 
 
