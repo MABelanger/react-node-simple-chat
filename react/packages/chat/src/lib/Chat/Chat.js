@@ -55,7 +55,7 @@ export class Chat extends React.Component {
       return false;
     }
 
-    if(!utils.isEnableSendSeen(this.props.messages, this.props.username)) {
+    if(!utils.isEnableSendSeen(this.props.messages, this.props.username )) {
       return false;
     }
 
