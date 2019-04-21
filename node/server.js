@@ -130,7 +130,7 @@ io.on("connection", function(client) {
       const { username, sendDateIso, content, dataUri } = message;
       audioUtils.saveAudio(dataUri, username)
         .then((audioUrl)=>{
-          console.log('success saved audio');
+          console.log('success saved audio:', audioUrl);
           const stripedDataUriMessage = {
             username,
             sendDateIso,
