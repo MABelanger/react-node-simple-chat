@@ -6,9 +6,19 @@ function _updateFile(message, cb, filePath) {
       if (err){
         throw err;
       } else {
-      obj = JSON.parse(data); //now it an object
+      let obj = null;
+      let json = null;
+
+      // try to parse the file, if error, create an empty array.
+      try {
+        obj = JSON.parse(data); //now it an object
+      } catch(e) {
+        obj = [];
+      }
+
+      // update the new message cant convert back to json.
       obj.push(message); //add some data
-      json = JSON.stringify(obj); //convert it back to json
+      json = JSON.stringify(obj);
 
       fs.writeFile(filePath, json, 'utf8', function (err) {
         if (err) {

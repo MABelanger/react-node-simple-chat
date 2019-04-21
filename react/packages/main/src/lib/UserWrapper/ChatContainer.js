@@ -8,8 +8,15 @@ function promiseOldMessages(){
   return fetch('/messages.json',{
     credentials: 'include'
   })
-    .then((response)=>{
-      return response.json()
+    .then(async (response)=>{
+      try {
+        let jsonResponse = await response.json()
+        return Promise.resolve(jsonResponse)
+
+      } catch(e) {
+        console.log('messages.json parsing error');
+        return Promise.resolve([]);
+      }
     })
 }
 
@@ -23,7 +30,7 @@ export class ChatContainer extends React.Component {
     // connect to server
     this.socket = socketIOClient.connect();
     this.state = {
-      messages : [{}]
+      messages : []
     }
   }
 

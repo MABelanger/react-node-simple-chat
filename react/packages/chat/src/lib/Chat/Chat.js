@@ -45,13 +45,18 @@ export class Chat extends React.Component {
   }
 
   handleSendSeen(seenDateIso) {
+
+    if(!this.props.messages) {
+      return false;
+    }
+
     // send only if not seen
     if(this.props.messages.length < 1) {
       return false;
     }
 
     let indexLast = this.props.messages.length - 1;
-    if(this.props.messages && this.props.messages[indexLast].seenDateIso) {
+    if(this.props.messages[indexLast].seenDateIso) {
       return false;
     }
 
