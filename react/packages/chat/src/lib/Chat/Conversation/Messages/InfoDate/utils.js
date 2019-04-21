@@ -25,16 +25,19 @@ export function timeDifference(current, previous) {
          return Math.round(elapsed/msPerHour ) + ' hours ago';
     }
 
-    else if (elapsed < msPerMonth) {
+    else if ( (elapsed < msPerMonth) && (Math.round(elapsed/msPerDay) <= 1) ) {
         return 'approximately ' + Math.round(elapsed/msPerDay) + ' days ago';
     }
 
     else if (elapsed < msPerYear) {
-        return 'approximately ' + Math.round(elapsed/msPerMonth) + ' months ago';
+        // return 'approximately ' + Math.round(elapsed/msPerMonth) + ' months ago';
     }
 
     else {
-        return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years ago';
+        // return 'approximately ' + Math.round(elapsed/msPerYear ) + ' years ago';
+        var options = { weekday: 'long', month: 'long', day: 'numeric' };
+        let day = new Date(previous).toLocaleDateString("fr-CA", options);
+        return day;
     }
 }
 

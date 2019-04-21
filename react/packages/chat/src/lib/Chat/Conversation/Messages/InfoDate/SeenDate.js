@@ -21,7 +21,7 @@ function SeenDate({ seenDateIso, isShow }) {
 
   return (
     <div className={styles['info-date']}>
-      vue: { renderSeen(seenDateIso) }
+      vue: { renderSeen(seenDateIso) }.
     </div>
   );
 }
