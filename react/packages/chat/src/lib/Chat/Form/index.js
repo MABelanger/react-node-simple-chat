@@ -7,7 +7,8 @@ export class Form extends React.Component {
   constructor(props) {
     super(props);
     this.handleContentChange = this.handleContentChange.bind(this);
-    this.handleSend = this.handleSend.bind(this);
+    this.handleSendMessage = this.handleSendMessage.bind(this);
+    this.handleSendSeen = this.handleSendSeen.bind(this);
     this.state = {
       content: ''
     };
@@ -18,7 +19,7 @@ export class Form extends React.Component {
     // if is enter
     let lastChar = content[content.length - 1];
     if (utils.isSendChar(lastChar)) {
-      this.handleSend(e);
+      this.handleSendMessage(e);
     } else {
       this.setState({
         content
@@ -26,14 +27,22 @@ export class Form extends React.Component {
     }
   }
 
-  handleSend(e) {
+  handleSendMessage(e) {
     e.preventDefault();
     let contentHtml = utils.getContentHtml(this.state.content);
-    this.props.onSend(contentHtml);
+    this.props.onSendMessage(contentHtml);
     this.setState({
       content:''
     });
   }
+
+  handleSendSeen(e) {
+    e.preventDefault();
+    console.log('seen')
+    let seenDate = new Date().toISOString()
+    this.props.onSendSeen(seenDate);
+  }
+
 
   render() {
     return(
@@ -44,9 +53,10 @@ export class Form extends React.Component {
                  type="text"
                  value={this.state.content}
                  onChange={this.handleContentChange}
+                 onFocus={this.handleSendSeen}
           />
           <button className={styles["button"]}
-                  onClick={this.handleSend}> Send </button>
+                  onClick={this.handleSendMessage}> Send </button>
         </form>
       </div>
     );

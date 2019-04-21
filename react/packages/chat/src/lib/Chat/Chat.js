@@ -14,7 +14,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 export class Chat extends React.Component {
   constructor(props) {
     super(props);
-    this.handleSend = this.handleSend.bind(this);
+    this.handleSendMessage = this.handleSendMessage.bind(this);
+    this.handleSendSeen = this.handleSendSeen.bind(this);
     this.scrollToBottom = this.scrollToBottom.bind(this);
   }
 
@@ -30,7 +31,7 @@ export class Chat extends React.Component {
     }, 10)
   }
 
-  handleSend(content) {
+  handleSendMessage(content) {
     if(content.length == 0){
       return false;
     }
@@ -38,6 +39,21 @@ export class Chat extends React.Component {
       username: this.props.username,
       date: new Date(),
       content: content
+    };
+    this.props.onSend(message);
+  }
+
+  handleSendSeen(seenDate) {
+    // send only if not seen.
+    if(this.props.messages.length > 0) {
+      let indexLast = this.props.messages.length - 1;
+      if(this.props.messages && this.props.messages[indexLast].seenDate) {
+        return false;
+      }
+    }
+    let message = {
+      username: this.props.username,
+      seenDate: seenDate
     };
     this.props.onSend(message);
   }
@@ -55,7 +71,10 @@ export class Chat extends React.Component {
         {
           <AudioRecorder username={this.props.username} />
         }
-        <Form onSend={this.handleSend} />
+        <Form onSendMessage={this.handleSendMessage}
+              onSendSeen={this.handleSendSeen}
+
+        />
         <ScroolBottom reference={(el) => { this.refScroolDown = el; }} />
       </div>
     );
