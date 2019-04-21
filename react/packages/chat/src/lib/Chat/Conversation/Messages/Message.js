@@ -1,8 +1,9 @@
 import React from 'react';
+import styles from './message.styles.module.css';
 
 function Message({ content }) {
   return (
-    <div dangerouslySetInnerHTML={{ __html: content }}></div>
+    <div className={styles['linkified']} dangerouslySetInnerHTML={{ __html: content }}></div>
   );
 }
 
