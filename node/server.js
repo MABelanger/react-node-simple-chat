@@ -128,7 +128,6 @@ io.on("connection", function(client) {
   app.post('/audio', function(req, res, next) {
       const message = req.body;
       const { username, sendDateIso, content, dataUri } = message;
-      console.log('sendDateIso', sendDateIso);
       audioUtils.saveAudio(dataUri, username)
         .then((audioUrl)=>{
           console.log('success saved audio');
