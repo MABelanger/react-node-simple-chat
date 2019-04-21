@@ -31,9 +31,9 @@ function _decodeBase64 (dataUri) {
   }
   return file;
 }
-
-function _getFileName (extention, fileNumber) {
-  return 'audio-' + fileNumber + '.' + extention;
+// fileNumber, username, extention
+function _getFileName (fileNumber, username, extention) {
+  return 'audio-' + fileNumber + '-' + username + '.' + extention;
 }
 
 function _getExtention (fileType) {
@@ -47,10 +47,10 @@ function _getExtention (fileType) {
   return 'bin';
 }
 
-function _getDataAndFileName (dataUri, fileNumber) {
+function _getDataAndFileName (dataUri, fileNumber, username) {
   let {type, codec, data} = _decodeBase64(dataUri);
   let extention = _getExtention(type);
-  let fileName = _getFileName(extention, fileNumber);
+  let fileName = _getFileName(fileNumber, username, extention);
 
   return {
     data,
@@ -58,12 +58,12 @@ function _getDataAndFileName (dataUri, fileNumber) {
   };
 }
 
-function saveAudio (dataUri) {
+function saveAudio (dataUri, username) {
   let promise = new Promise((resolve, reject) => {
     let mediaDir = path.join(__dirname, '../media');
 
     fs.readdir(mediaDir, (err, files) => {
-      let {data, fileName} = _getDataAndFileName(dataUri, files.length);
+      let {data, fileName} = _getDataAndFileName(dataUri, files.length, username);
 
       if (!data) {
         reject(new Error('No audio or wrong format'));
