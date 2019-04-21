@@ -4,6 +4,7 @@ import Conversation from './Conversation';
 import Form from './Form';
 import Header from './Header';
 import ScroolBottom from './ScroolBottom';
+import * as utils from './utils';
 import AudioRecorder from '@react-simple-chat/audio-recorder';
 
 
@@ -44,18 +45,25 @@ export class Chat extends React.Component {
   }
 
   handleSendSeen(seenDate) {
-    // send only if not seen.
-    if(this.props.messages.length > 0) {
-      let indexLast = this.props.messages.length - 1;
-      if(this.props.messages && this.props.messages[indexLast].seenDate) {
-        return false;
-      }
+    // send only if not seen
+    if(this.props.messages.length < 1) {
+      return false;
     }
+
+    let indexLast = this.props.messages.length - 1;
+    if(this.props.messages && this.props.messages[indexLast].seenDate) {
+      return false;
+    }
+    if(!utils.isEnableSendSeen(this.props.messages, this.props.username + '1')) {
+      return false;
+    }
+
     let message = {
       username: this.props.username,
       seenDate: seenDate
     };
     this.props.onSend(message);
+
   }
 
   scrollToBottom() {

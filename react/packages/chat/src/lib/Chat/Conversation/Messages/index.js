@@ -22,7 +22,6 @@ function Messages({ messages, username }) {
           <li className={`${styles['date']} ${dateClassName}`}>
             <InfoDate messageDate={message.date}
                       seenDate={message.date}
-                      isShowSeenDate={isShowSeenDate}
             />
           </li>
         </React.Fragment>
@@ -37,7 +36,6 @@ function Messages({ messages, username }) {
           <li className={`${styles['date']} ${dateClassName}`}>
             <InfoDate messageDate={message.date}
                       seenDate={message.date}
-                      isShowSeenDate={isShowSeenDate}
             />
           </li>
         </React.Fragment>
@@ -48,7 +46,7 @@ function Messages({ messages, username }) {
         <React.Fragment key={index}>
           <li className={`${styles['date']} ${dateClassName}`}>
             <SeenDate seenDate={message.seenDate}
-                      isShow={true} />
+                      isShow={isShowSeenDate} />
           </li>
         </React.Fragment>
       );
