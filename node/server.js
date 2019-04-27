@@ -1,20 +1,20 @@
-var express = require("express");
-var app = express();
-var server = require("http").createServer(app);
-var io = require("socket.io")(server);
-var path = require('path');
-var fs = require('fs');
-var passport = require('passport');
-var session = require('express-session');
-var bodyParser = require('body-parser');
-var LocalStrategy = require('passport-local').Strategy
-var FileStore = require('session-file-store')(session);
-var utils = require('./utils');
-var dotenv = require('dotenv');
+const express = require("express");
+const app = express();
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
+const path = require('path');
+const fs = require('fs');
+const passport = require('passport');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const LocalStrategy = require('passport-local').Strategy
+const FileStore = require('session-file-store')(session);
+const utils = require('./utils');
+const dotenv = require('dotenv');
 
 
-var audioUtils = require('./audio/utils');
-var messageUtils = require('./message/utils');
+const audioUtils = require('./audio/utils');
+const messageUtils = require('./message/utils');
 
 
 // read .env file and add it to process.env
@@ -28,15 +28,15 @@ if(process.env.USERS){
   USERS = JSON.parse(process.env.USERS);
 }
 
-var socketListners = require('./socketListners')();
+let socketListners = require('./socketListners')();
 
 function sendMessagesJson(res) {
-  var usersFilePath = path.join(__dirname, '/db/messages.json');
+  let usersFilePath = path.join(__dirname, '/db/messages.json');
   fs.access(usersFilePath, fs.constants.F_OK, (err) => {
     if(err) {
       res.json([]);
     } else {
-      var readable = fs.createReadStream(usersFilePath);
+      let readable = fs.createReadStream(usersFilePath);
       readable.pipe(res);
     }
   });
@@ -47,7 +47,7 @@ function sendUserJson(res, user) {
 }
 
 function sendNeedToLogin(res) {
-  var error = {
+  let error = {
     error : 'need to login!'
   }
   return res.status(401).json(error);
@@ -58,13 +58,13 @@ app.use(bodyParser.json({ limit: '500mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Headers to enable Cross-origin resource sharing (CORS)
-var middlewareCors = require('./middlewares/cors');
-var middlewareUserAgent = require('./middlewares/userAgent');
+let middlewareCors = require('./middlewares/cors');
+let middlewareUserAgent = require('./middlewares/userAgent');
 
 app.use(middlewareCors);
 app.use(middlewareUserAgent);
 
-var configSession = {
+let configSession = {
   store: new FileStore(),
   secret: process.env.SESSION_SECRET,
   proxy: true,
@@ -86,8 +86,8 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-  var validUserId = null;
-  for(var i=0; i<USERS.length; i++) {
+  let validUserId = null;
+  for(let i=0; i<USERS.length; i++) {
     if(id == USERS[i].id) {
       done(null, USERS[i]);
     }
@@ -96,7 +96,7 @@ passport.deserializeUser(function(id, done) {
 
 passport.use('local', new LocalStrategy(
   function (username, password, done) {
-    for(var i=0; i<USERS.length; i++) {
+    for(let i=0; i<USERS.length; i++) {
       if (username === USERS[i].username && password === USERS[i].password) {
         return done(null, USERS[i]);
       }
@@ -111,7 +111,7 @@ app.post('/login', function(req, res, next) {
       return res.status(500).json(error);
     }
     if(!user) {
-      var error = {
+      let error = {
         error : 'wrong user or password'
       }
       return res.status(401).json(error);
@@ -168,16 +168,32 @@ function logMedia(req, res, next) {
     userAgent: res.locals.ua
   };
 
-  console.log('log', JSON.stringify(log));
+  console.log('logMedia:', JSON.stringify(log));
 
   return next();
 
 }
+
+function logUser(req, res, next) {
+  let isAuthenticated = req.isAuthenticated();
+  if(isAuthenticated) {
+    let log = {
+      date: new Date(new Date().getTime() - 1000*60*60*4),
+      username: req.user.username,
+      userAgent: res.locals.ua
+    };
+
+    console.log('logUser:', JSON.stringify(log));
+  }
+
+  return next();
+}
+
 app.use('/media', isAuthenticated, logMedia, express.static('media'))
 
 // private messages.json
 app.get('/messages.json', function(req, res){
-  var isAuthenticated = req.isAuthenticated();
+  let isAuthenticated = req.isAuthenticated();
   if(isAuthenticated) {
     sendMessagesJson(res);
   } else {
@@ -185,12 +201,10 @@ app.get('/messages.json', function(req, res){
   }
 });
 
-app.get('/user', function(req, res){
-  var isAuthenticated = req.isAuthenticated();
+app.get('/user', logUser, function(req, res){
+  let isAuthenticated = req.isAuthenticated();
   if(isAuthenticated) {
     let user = req.user;
-    console.log('user', user);
-    console.log('res.locals.ua', res.locals.ua);
     sendUserJson(res, user);
   } else {
     sendNeedToLogin(res);
