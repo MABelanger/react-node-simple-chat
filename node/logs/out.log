@@ -1,0 +1,8 @@
+server listen on *:5000
+[session-file-store] will retry, error on last attempt: Error: ENOENT: no such file or directory, open 'sessions/Iro-4tRpUeb-2wyOQRyWXLwK9pSwkgha.json'
+[session-file-store] will retry, error on last attempt: Error: ENOENT: no such file or directory, open 'sessions/Iro-4tRpUeb-2wyOQRyWXLwK9pSwkgha.json'
+[session-file-store] will retry, error on last attempt: Error: ENOENT: no such file or directory, open 'sessions/Iro-4tRpUeb-2wyOQRyWXLwK9pSwkgha.json'
+[session-file-store] will retry, error on last attempt: Error: ENOENT: no such file or directory, open 'sessions/Iro-4tRpUeb-2wyOQRyWXLwK9pSwkgha.json'
+[session-file-store] will retry, error on last attempt: Error: ENOENT: no such file or directory, open 'sessions/Iro-4tRpUeb-2wyOQRyWXLwK9pSwkgha.json'
+logUser: {"date":"2019-06-30T13:56:27.715Z","username":"user1","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"}
+logUser: {"date":"2019-06-30T13:57:44.282Z","username":"user1","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"}
