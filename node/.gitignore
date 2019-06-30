@@ -7,6 +7,9 @@ node_modules/
 db/*
 !db/.gitkeep
 
+logs/*
+!logs/.gitkeep
+
 # media audio
 media/*
 !media/.gitkeep
