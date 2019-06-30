@@ -1,4 +1,5 @@
 import AudioRecorder from './AudioRecorder';
 
-export {AudioRecorder};
+export * from './AudioRecorder';
+
 export default AudioRecorder;

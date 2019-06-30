@@ -1,7 +1,7 @@
 {
   "name": "@react-simple-chat/chat",
   "version": "0.1.0",
-  "main": "dist/index.js",
+  "main": "src/lib/index.js",
   "module": "dist/index.js",
   "files": [
     "dist",
