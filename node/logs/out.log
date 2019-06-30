@@ -1,4 +1,0 @@
-server listen on *:5000
-logUser: {"date":"2019-06-30T14:05:24.186Z","username":"user1","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"}
-server listen on *:5000
-logUser: {"date":"2019-06-30T14:05:50.678Z","username":"user1","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"}
