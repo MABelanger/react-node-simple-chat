@@ -1,11 +1,8 @@
 var path = require('path');
 var nodeExternals = require('webpack-node-externals');
 var webpack = require('webpack');
-const autoprefixer = require('autoprefixer');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var isEnvProduction = true;
-
 
 var createWebpackConfig = {
 

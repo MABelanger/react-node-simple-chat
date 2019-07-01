@@ -2,6 +2,8 @@ import React from 'react';
 
 import Chat from '../lib';
 
+import 'bootstrap/dist/css/bootstrap.css';
+
 export class App extends React.Component {
 
   constructor(props) {
