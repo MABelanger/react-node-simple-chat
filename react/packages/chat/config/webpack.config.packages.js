@@ -2,6 +2,7 @@ var path = require('path');
 var nodeExternals = require('webpack-node-externals');
 var webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var isEnvProduction = true;
 
@@ -11,7 +12,8 @@ var createWebpackConfig = {
   entry: './src/lib/index.js',
   output: {
     path: path.resolve(__dirname, '..' , 'dist'),
-    filename: 'index.js'
+    filename: 'index.js',
+    libraryTarget:'umd'
   },
 
   target: 'node', // in order to ignore built-in modules like path, fs, etc.
@@ -26,41 +28,35 @@ var createWebpackConfig = {
     strictExportPresence: true,
     rules: [
       {
-        // "oneOf" will traverse all following loaders until one will
-        // match the requirements. When no loader matches it will fall
-        // back to the "file" loader at the end of the loader list.
         oneOf: [
           {
-            test: /\.svg$/,
-            use: ['@svgr/webpack'],
+              test: /\.(jpg|png|svg)$/,
+              loader: 'url-loader',
+              options: {
+                limit: 25000,
+              },
           },
-
           {
-            test: /\.css$/i,
-            use: ['style-loader', 'css-loader'],
-            exclude: [
-              // path.resolve(__dirname, "../../../node_modules/bootstrap"),
-            ]
+              test: /\.(jpg|png|svg)$/,
+              loader: 'file-loader',
+              options: {
+                name: '[path][name].[hash].[ext]',
+              },
           },
           {
             test: /\.module\.css$/,
-            // exclude: /\.module\.css$/,
             use: [
               {
-                loader: 'css-loader',
-                options: {
-                  importLoaders: 1,
-                  modules: true,
-                  localIdentName: '[name]__[local]__[hash:base64:5]'
-                }
+                loader: "style-loader"
               },
-              // {
-              //   loader: 'postcss-loader',
-              //   options: {
-              //     ident: "postcss",
-              //     sourceMap: true
-              //   },
-              // }
+              {
+                loader: "css-loader",
+                options: {
+                  modules: {
+                      localIdentName: "[local]___[hash:base64:5]"
+                  }
+                }
+              }
             ]
           },
           {

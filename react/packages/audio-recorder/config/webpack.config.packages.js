@@ -43,7 +43,6 @@ var createWebpackConfig = {
                 name: '[path][name].[hash].[ext]',
               },
           },
-
           {
             test: /\.module\.css$/,
             use: [
@@ -60,7 +59,6 @@ var createWebpackConfig = {
               }
             ]
           },
-
           {
             test: /\.(js|mjs)$/,
             exclude: /@babel(?:\/|\\{1,2})runtime/,
