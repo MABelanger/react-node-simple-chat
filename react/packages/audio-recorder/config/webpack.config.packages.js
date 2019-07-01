@@ -2,6 +2,7 @@ var path = require('path');
 var nodeExternals = require('webpack-node-externals');
 var webpack = require('webpack');
 const autoprefixer = require('autoprefixer');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var isEnvProduction = true;
 
@@ -44,33 +45,22 @@ var createWebpackConfig = {
           },
 
           {
-            test: /\.css$/i,
-            use: ['style-loader', 'css-loader'],
-            exclude: [
-              // path.resolve(__dirname, "../../../node_modules/bootstrap"),
-            ]
-          },
-          {
             test: /\.module\.css$/,
-            // exclude: /\.module\.css$/,
             use: [
               {
-                loader: 'css-loader',
-                options: {
-                  importLoaders: 1,
-                  modules: true,
-                  localIdentName: '[name]__[local]__[hash:base64:5]'
-                }
+                loader: "style-loader"
               },
-              // {
-              //   loader: 'postcss-loader',
-              //   options: {
-              //     ident: "postcss",
-              //     sourceMap: true
-              //   },
-              // }
+              {
+                loader: "css-loader",
+                options: {
+                  modules: {
+                      localIdentName: "[local]___[hash:base64:5]"
+                  }
+                }
+              }
             ]
           },
+
           {
             test: /\.(js|mjs)$/,
             exclude: /@babel(?:\/|\\{1,2})runtime/,

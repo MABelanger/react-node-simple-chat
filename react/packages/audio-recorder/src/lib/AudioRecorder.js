@@ -148,7 +148,7 @@ export class AudioRecorder extends React.Component {
 
         {
           // this.state.blob &&
-          //   <button className={styles['button-send']} onClick={this.handleSend}>Send</button>
+          <button className={styles['button-send']} onClick={this.handleSend}>Send</button>
         }
       </div>
     );
