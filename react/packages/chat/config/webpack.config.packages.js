@@ -82,9 +82,6 @@ var createWebpackConfig = {
       }
     ]
   },
-
-
-
 };
 
 
