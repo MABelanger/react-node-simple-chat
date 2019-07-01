@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import AppBlobQueue from './AppBlobQueue';
+import AppPostQueue from './AppPostQueue';
 
 
 export const App = (props) => {
@@ -9,7 +9,7 @@ export const App = (props) => {
   }, [])
 
   return (
-    <AppBlobQueue />
+    <AppPostQueue />
   );
 }
 
