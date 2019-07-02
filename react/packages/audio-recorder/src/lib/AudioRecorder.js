@@ -4,6 +4,10 @@ import AudioRecord from './AudioRecord';
 import AudioPreview from './AudioPreview';
 import microphone from './microphone.svg';
 
+import axios from 'axios';
+
+import save from './save.svg';
+
 import { downloadAudioFileFomBlob } from './utils';
 
 import styles from './styles.module.css';
@@ -11,6 +15,17 @@ import styles from './styles.module.css';
 //  add bootstrap
 //  https://github.com/facebook/create-react-app/issues/301
 import 'bootstrap/dist/css/bootstrap.css';
+
+
+function postDataAxios(url = ``, data = {}, cbProgress) {
+  return axios.request( {
+    method: "post",
+    url: url,
+    data: data,
+    onUploadProgress: cbProgress
+  })
+}
+
 
 function postData(url = ``, data = {}) {
   // Default options are marked with *
@@ -30,7 +45,7 @@ function postData(url = ``, data = {}) {
     .then(response => response.json()); // parses response to JSON
 }
 
-function sendAudio(blob, username){
+function sendAudio(blob, username, cbProgress){
   let promise = new Promise((resolve, reject) => {
     let reader = new FileReader();
     reader.readAsDataURL(blob);
@@ -41,8 +56,11 @@ function sendAudio(blob, username){
           dataUri: base64data,
           sendDateIso: new Date().toISOString()
         }
-        postData('/audio', message)
+
+        //postData('/audio', message)
+        postDataAxios('/audio', message, cbProgress)
           .then((response) => {
+            console.log('response', response)
             resolve(response);
           }) // JSON-string from `response.json()` call
           .catch((error) => {
@@ -68,6 +86,7 @@ export class AudioRecorder extends React.Component {
     this.handleEnableRecord = this.handleEnableRecord.bind(this);
     this.handleSuccessMediaDevices = this.handleSuccessMediaDevices.bind(this);
     this.handleRetryPost = this.handleRetryPost.bind(this);
+    this.handlePostProgress = this.handlePostProgress.bind(this);
     this.constraints = {
       audio: true,
       video: false
@@ -132,13 +151,21 @@ export class AudioRecorder extends React.Component {
       .catch(handleErrorMediaDevices);
   }
 
+  handlePostProgress(p){
+    console.log('p->', p);
+    const percentProgress = ((p.loaded / p.total) * 100).toFixed(2);
+    this.setState({
+      percentProgress
+    })
+  }
+
   handleSend() {
     this.setState({
       isPostSending: true
     });
-    sendAudio(this.state.blob, this.props.username)
+    sendAudio(this.state.blob, this.props.username, this.handlePostProgress)
       .then((response)=>{
-        console.log(JSON.stringify(response));
+        // console.log(JSON.stringify(response));
         this.setState({
           blob: null,
           isShowMicrophone: true,
@@ -158,13 +185,23 @@ export class AudioRecorder extends React.Component {
   render() {
     if(this.state.isPostSending) {
       return(
-        <div>Sending...
-          <button className={"btn btn-primary"}
-                  onClick={()=>{
-                    downloadAudioFileFomBlob (1, this.state.blob)
-                  }}
-          >Download
-          </button>
+        <div>
+          {this.state.percentProgress} %
+          &nbsp;
+          &nbsp;
+          &nbsp;
+          <img src={save}
+               style={{ width: '30px', cursor: 'pointer' }}
+               onClick={this.handleRetryPost}
+          />
+          {
+            // <button className={"btn btn-primary"}
+            //         onClick={()=>{
+            //           downloadAudioFileFomBlob (1, this.state.blob)
+            //         }}
+            // >Download
+            // </button>
+          }
         </div>
       )
     }

@@ -960,7 +960,7 @@ for-own@^0.1.4:
   dependencies:
     for-in "^1.0.1"
 
-forever-monitor@^1.7.1, forever-monitor@~1.7.0:
+forever-monitor@~1.7.0:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/forever-monitor/-/forever-monitor-1.7.1.tgz#5d820f4a3a78db2d81ae2671f158b9e86a091bb8"
   integrity sha1-XYIPSjp42y2BriZx8Vi56GoJG7g=
