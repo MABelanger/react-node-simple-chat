@@ -1,14 +1,13 @@
 import React from 'react';
+import axios from 'axios';
 
 import AudioRecord from './AudioRecord';
 import AudioPreview from './AudioPreview';
+import { saveAudioFileFomBlob } from './utils';
+
 import microphone from './microphone.svg';
-
-import axios from 'axios';
-
 import save from './save.svg';
-
-import { downloadAudioFileFomBlob } from './utils';
+import upload from './upload.svg';
 
 import styles from './styles.module.css';
 
@@ -25,7 +24,6 @@ function postDataAxios(url = ``, data = {}, cbProgress) {
     onUploadProgress: cbProgress
   })
 }
-
 
 function postData(url = ``, data = {}) {
   // Default options are marked with *
@@ -85,7 +83,6 @@ export class AudioRecorder extends React.Component {
     this.handleSend = this.handleSend.bind(this);
     this.handleEnableRecord = this.handleEnableRecord.bind(this);
     this.handleSuccessMediaDevices = this.handleSuccessMediaDevices.bind(this);
-    this.handleRetryPost = this.handleRetryPost.bind(this);
     this.handlePostProgress = this.handlePostProgress.bind(this);
     this.constraints = {
       audio: true,
@@ -107,13 +104,6 @@ export class AudioRecorder extends React.Component {
       blob,
       // isShowMicrophone: true
     })
-    this.handleSend()
-  }
-
-  handleRetryPost() {
-    this.setState({
-      isPostError: false
-    });
     this.handleSend()
   }
 
@@ -161,7 +151,8 @@ export class AudioRecorder extends React.Component {
 
   handleSend() {
     this.setState({
-      isPostSending: true
+      isPostSending: true,
+      isPostError: false
     });
     sendAudio(this.state.blob, this.props.username, this.handlePostProgress)
       .then((response)=>{
@@ -192,34 +183,34 @@ export class AudioRecorder extends React.Component {
           &nbsp;
           <img src={save}
                style={{ width: '30px', cursor: 'pointer' }}
-               onClick={this.handleRetryPost}
+               onClick={()=>{
+                 saveAudioFileFomBlob (1, this.state.blob)
+               }}
           />
-          {
-            // <button className={"btn btn-primary"}
-            //         onClick={()=>{
-            //           downloadAudioFileFomBlob (1, this.state.blob)
-            //         }}
-            // >Download
-            // </button>
-          }
         </div>
       )
     }
     if(this.state.isPostError) {
       return (
         <div>
-          <AudioPreview blob={this.state.blob} />
-          <button className={"btn btn-primary"}
-                  onClick={this.handleRetryPost}
-          >Resend
-          </button>
+          {
+            // <AudioPreview blob={this.state.blob} />
+            // &nbsp;
+            // &nbsp;
+          }
+          <img src={upload}
+               style={{ width: '50px', cursor: 'pointer' }}
+               onClick={this.handleSend}
+          />
           &nbsp;
-          <button className={"btn btn-primary"}
-                  onClick={()=>{
-                    downloadAudioFileFomBlob (1, this.state.blob)
-                  }}
-          >Download
-          </button>
+          &nbsp;
+          &nbsp;
+          <img src={save}
+               style={{ width: '30px', cursor: 'pointer' }}
+               onClick={()=>{
+                 saveAudioFileFomBlob (1, this.state.blob)
+               }}
+          />
         </div>
       )
     }

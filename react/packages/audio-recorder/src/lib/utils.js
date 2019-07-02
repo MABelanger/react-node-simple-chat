@@ -13,7 +13,7 @@ function getFileName (number, blobType) {
   return `${prefix}-${photoNumber}.${extention}`;
 }
 
-export function downloadAudioFileFomBlob (number, blob) {
+export function saveAudioFileFomBlob (number, blob) {
   window.URL = window.webkitURL || window.URL;
 
   let anchor = document.createElement('a');
