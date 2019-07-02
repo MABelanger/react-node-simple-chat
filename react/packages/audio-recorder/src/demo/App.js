@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 class App extends Component {
   render() {
     return (
-      <AudioRecorder />
+      <AudioRecorder username={'devAudioRecorder'} />
     );
   }
 }
