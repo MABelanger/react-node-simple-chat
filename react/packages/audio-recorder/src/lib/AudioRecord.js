@@ -1,6 +1,6 @@
 import React from 'react';
-import stopButton from './stopButton.svg';
-import recordButton from './recordButton.svg';
+import stopButton from './svg/stopButton.svg';
+import recordButton from './svg/recordButton.svg';
 
 function renderSecond(nbSecond) {
   return (
