@@ -1,0 +1,31 @@
+{
+  "name": "packages-manager",
+  "version": "0.1.0",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "bootstrap": "^4.3.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "3.0.1",
+    "@react-simple-chat/audio-recorder": "0.1.0",
+    "linkifyjs": "^2.1.8",
+    "socket.io-client": "^2.2.0",
+    "@react-simple-chat/chat": "0.1.0"
+  },
+  "devDependencies": {
+    "babel-loader": "8.0.5",
+    "css-loader": "2.1.1",
+    "file-loader": "3.0.1",
+    "style-loader": "0.23.1",
+    "url-loader": "1.1.2",
+    "webpack": "4.29.6",
+    "webpack-cli": "^3.3.5",
+    "webpack-node-externals": "1.7.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "rm -rf dist && NODE_ENV=production babel src/lib --source-maps --out-dir dist --ignore __tests__,spec.js,test.js,__snapshots__",
+    "eject": "react-scripts eject"
+  }
+}

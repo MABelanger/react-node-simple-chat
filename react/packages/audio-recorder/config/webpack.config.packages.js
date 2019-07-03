@@ -49,9 +49,10 @@ var createWebpackConfig = {
               {
                 loader: "css-loader",
                 options: {
-                  modules: {
-                      localIdentName: "[local]___[hash:base64:5]"
-                  }
+                  modules: true,
+                  localIdentName: "[name]_[local]_[hash:base64]",
+                  camelCase: true,
+                  sourceMap: true
                 }
               }
             ]

@@ -5,3 +5,5 @@ cat node_modules/file-loader/package.json | grep version
 cat node_modules/style-loader/package.json | grep version
 cat node_modules/css-loader/package.json | grep version
 cat node_modules/babel-loader/package.json | grep version
+
+cat node_modules/webpack-cli/package.json | grep version
