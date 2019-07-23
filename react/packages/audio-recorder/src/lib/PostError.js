@@ -15,7 +15,7 @@ export const PostError = (props) => {
       }
       <img src={upload}
            style={{ width: '50px', cursor: 'pointer' }}
-           onClick={this.onSend}
+           onClick={props.onSend}
       />
       &nbsp;
       &nbsp;
