@@ -69,7 +69,10 @@ export class AudioRecorder extends React.Component {
     //   audioBitsPerSecond : 128000,
     //   mimeType : 'audio/ogg'
     // }
-    let mediaRecorder = new MediaRecorder(stream);
+    let recordOptions = {
+      mimeType : 'audio/webm;codecs=opus'
+    };
+    let mediaRecorder = new MediaRecorder(stream, recordOptions);
 
     this.setState({
       mediaRecorder,
