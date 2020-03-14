@@ -64,6 +64,7 @@ export class UserWrapper extends React.Component {
     if(this.state.username) {
       return(
         <div>
+          v3
           <ChatContainer username={this.state.username} />
         </div>
       );

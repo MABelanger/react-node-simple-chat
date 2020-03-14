@@ -16,6 +16,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
+    "opus-media-recorder": "0.7.18",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^4.3.1",

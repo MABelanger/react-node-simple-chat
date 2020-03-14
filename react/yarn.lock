@@ -3621,6 +3621,11 @@ destroy@~1.0.4:
   resolved "https://registry.yarnpkg.com/destroy/-/destroy-1.0.4.tgz#978857442c44749e4206613e37946205826abd80"
   integrity sha1-l4hXRCxEdJ5CBmE+N5RiBYJqvYA=
 
+detect-browser@^4.1.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/detect-browser/-/detect-browser-4.8.0.tgz#1d73bd88c17be866901950ce0aaae1ed060902c6"
+  integrity sha512-f4h2dFgzHUIpjpBLjhnDIteXv8VQiUm8XzAuzQtYUqECX/eKh67ykuiVoyb7Db7a0PUSmJa3OGXStG0CbQFUVw==
+
 detect-file@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/detect-file/-/detect-file-1.0.0.tgz#f0d66d03672a825cb1b73bdb3fe62310c8e552b7"
@@ -4235,6 +4240,11 @@ etag@~1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
+
+event-target-shim@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/event-target-shim/-/event-target-shim-3.0.2.tgz#af25bb55a97c670bbeba985c82647fb64d892153"
+  integrity sha512-HK5GhnEAkm7fLy249GtF7DIuYmjLm85Ft6ssj7DhVl8Tx/z9+v0W6aiIVUdT4AXWGYy5Fc+s6gqBI49Bf0LejQ==
 
 eventemitter3@^3.0.0:
   version "3.1.2"
@@ -7665,6 +7675,14 @@ optionator@^0.8.1, optionator@^0.8.2:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
     wordwrap "~1.0.0"
+
+opus-media-recorder@0.7.18:
+  version "0.7.18"
+  resolved "https://registry.yarnpkg.com/opus-media-recorder/-/opus-media-recorder-0.7.18.tgz#252ec89e4c2c41a58f5ec285369b5a46400519d1"
+  integrity sha512-glPJb1wQaoj0j10U1XFX5Dt/jArYDV+jIoJOnJEprszEHu6erOHi/oN/l02xKXVUWMWHAYcH/Gtw1J+1UiOQOA==
+  dependencies:
+    detect-browser "^4.1.0"
+    event-target-shim "^3.0.2"
 
 original@^1.0.0:
   version "1.0.2"

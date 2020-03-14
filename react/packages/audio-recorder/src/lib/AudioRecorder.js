@@ -1,4 +1,5 @@
 import React from 'react';
+import MediaRecorder from 'opus-media-recorder';
 
 import AudioRecord from './AudioRecord';
 import PostSending from './PostSending';
@@ -17,6 +18,16 @@ import styles from './styles.module.css';
 //  add bootstrap
 //  https://github.com/facebook/create-react-app/issues/301
 import 'bootstrap/dist/css/bootstrap.css';
+
+console.log('process.env.PUBLIC_URL', process.env.PUBLIC_URL + '/opus-media-recorder/encoderWorker.umd.js');
+// opus-media-recorder options
+const workerOptions = {
+  encoderWorkerFactory: function () {
+    return new Worker(process.env.PUBLIC_URL + '/opus-media-recorder/encoderWorker.umd.js')
+  },
+  OggOpusEncoderWasmPath: process.env.PUBLIC_URL + '/opus-media-recorder/OggOpusEncoder.wasm',
+  WebMOpusEncoderWasmPath: process.env.PUBLIC_URL + '/opus-media-recorder/WebMOpusEncoder.wasm',
+};
 
 export class AudioRecorder extends React.Component {
 
@@ -70,9 +81,9 @@ export class AudioRecorder extends React.Component {
     //   mimeType : 'audio/ogg'
     // }
     let recordOptions = {
-      mimeType : 'audio/webm;codecs=opus'
+      mimeType : 'audio/ogg; codecs=opus'
     };
-    let mediaRecorder = new MediaRecorder(stream, recordOptions);
+    let mediaRecorder = new MediaRecorder(stream, recordOptions, workerOptions);
 
     this.setState({
       mediaRecorder,
