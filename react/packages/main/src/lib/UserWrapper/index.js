@@ -1,28 +1,24 @@
-import React from 'react';
-import { Redirect } from 'react-router-dom';
+import React from "react";
+import { Redirect } from "react-router-dom";
 
-import ChatContainer from './ChatContainer';
+import ChatContainer from "./ChatContainer";
 
-import socketIOClient from "socket.io-client";
-
-function promiseUser(){
-  return fetch('/user',{
-    credentials: 'include'
-  })
-    .then(async (response)=>{
-      try {
-        let jsonResponse = await response.json()
-        return Promise.resolve(jsonResponse)
-
-      } catch(e) {
-        return Promise.reject('/user parsing error');
-      }
-    });
+function promiseUser() {
+  return fetch("/user", {
+    credentials: "include",
+  }).then(async (response) => {
+    try {
+      let jsonResponse = await response.json();
+      return Promise.resolve(jsonResponse);
+    } catch (e) {
+      return Promise.reject("/user parsing error");
+    }
+  });
 }
 
 const INIT_STATE = {
   username: null,
-  isInitState: true
+  isInitState: true,
 };
 
 export class UserWrapper extends React.Component {
@@ -33,38 +29,36 @@ export class UserWrapper extends React.Component {
 
   componentDidMount() {
     promiseUser()
-      .then((user)=>{
-        if(!user.error) {
+      .then((user) => {
+        if (!user.error) {
           this.setState({
             username: user.username,
-            isInitState: false
+            isInitState: false,
           });
         } else {
           this.setState({
             username: null,
-            isInitState: false
+            isInitState: false,
           });
         }
       })
-      .catch((error)=>{
+      .catch((error) => {
         console.error(error);
       });
   }
 
-  componentDidUpdate() {
-
-  }
+  componentDidUpdate() {}
 
   render() {
-    if(!(this.state.username || this.state.isInitState)) {
-      return (<Redirect to='/login'/>);
+    if (!(this.state.username || this.state.isInitState)) {
+      return <Redirect to="/login" />;
     }
 
-    console.log('this.state.username', this.state.username);
-    if(this.state.username) {
-      return(
+    console.log("this.state.username", this.state.username);
+    if (this.state.username) {
+      return (
         <div>
-          v3
+          v0
           <ChatContainer username={this.state.username} />
         </div>
       );
@@ -72,7 +66,6 @@ export class UserWrapper extends React.Component {
 
     // render nothing while fetching user
     return null;
-
   }
 }
 
