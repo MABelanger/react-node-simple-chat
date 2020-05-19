@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "serverDev": "npx nodemon server.js </dev/null --ignore 'db/*.json' --ignore 'sessions/*.json'",
-    "server": "npx forever -o ./logs/out.log -e ./logs/err.log start server.js",
+    "server": "./node_modules/forever/bin/forever -a  -o ./logs/out.log -e ./logs/err.log ./server.js",
     "start": "npm run server",
     "dev": "npm run serverDev"
   },
